@@ -20,6 +20,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +31,7 @@
     <None Remove="Repositories\" />
     <None Remove="Models\Dto\" />
     <None Remove="Profiles\" />
+    <None Remove="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -39,5 +41,6 @@
     <Folder Include="Repositories\" />
     <Folder Include="Models\Dto\" />
     <Folder Include="Profiles\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
 </Project>

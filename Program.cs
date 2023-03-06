@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NZ_Walks.Data;
+using NZ_Walks.Exceptions;
 using NZ_Walks.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.ConfigureBuildExceptionHandler();
 
 app.UseHttpsRedirection();
 

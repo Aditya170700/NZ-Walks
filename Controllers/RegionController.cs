@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NZ_Walks.Models.Domain;
+using NZ_Walks.Models.Dto;
 using NZ_Walks.Repositories;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,32 +28,62 @@ namespace NZ_Walks.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAllAsync()
         {
             var result = await _regionRepository.GetAllAsync();
 
             return Ok(_mapper.Map<List<Models.Dto.Region>>(result));
         }
 
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{Id}")]
+        [ActionName("GetByIdAsync")]
+        public async Task<IActionResult> GetByIdAsync(Guid Id)
         {
-            return "value";
+            var result = await _regionRepository.GetByIdAsync(Id);
+
+            if (result == null)
+            {
+                throw new Exception($"Region with id {Id} doesnt exists");
+            }
+
+            return Ok(_mapper.Map<Models.Dto.Region>(result));
         }
 
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> AddAsync(Models.Dto.AddRegionRequest addRegionRequest)
         {
+            var result = await _regionRepository.AddAsync(_mapper.Map<Models.Domain.Region>(addRegionRequest));
+
+            return CreatedAtAction(nameof(GetByIdAsync), new { Id = result.Id }, _mapper.Map<Models.Dto.Region>(result));
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> UpdateAsync(Guid Id, [FromBody] UpdateRegionRequest updateRegionRequest)
         {
+            var region = await _regionRepository.GetByIdAsync(Id);
+
+            if (region == null)
+            {
+                throw new Exception($"Region with id {Id} doesnt exists");
+            }
+
+            var result = await _regionRepository.UpdateAsync(region, _mapper.Map<Models.Domain.Region>(updateRegionRequest));
+
+            return Ok(_mapper.Map<Models.Dto.Region>(result));
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> DeleteByIdAsync(Guid Id)
         {
+            var region = await _regionRepository.GetByIdAsync(Id);
+
+            if (region == null) {
+                throw new Exception($"Region with id {Id} doesnt exists");
+            }
+
+            await _regionRepository.DeleteAsync(region);
+
+            return Ok(_mapper.Map<Models.Dto.Region>(region));
         }
     }
 }
