@@ -18,6 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options => {
 
 // DI Repository
 builder.Services.AddScoped<IRegionRepository, RegionRepository>();
+builder.Services.AddScoped<IWalkRepository, WalkRepository>();
 
 // Automapper
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
