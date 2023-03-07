@@ -24,6 +24,9 @@
     <PackageReference Include="FluentValidation" Version="11.5.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.27.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.27.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +42,8 @@
     <None Remove="Models\Dto\WalkDifficulty\" />
     <None Remove="Validators\" />
     <None Remove="Validators\Region\" />
+    <None Remove="Models\Dto\Auth\" />
+    <None Remove="Validators\Auth\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -53,5 +58,7 @@
     <Folder Include="Models\Dto\WalkDifficulty\" />
     <Folder Include="Validators\" />
     <Folder Include="Validators\Region\" />
+    <Folder Include="Models\Dto\Auth\" />
+    <Folder Include="Validators\Auth\" />
   </ItemGroup>
 </Project>

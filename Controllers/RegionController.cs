@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NZ_Walks.Models.Domain;
@@ -28,6 +29,7 @@ namespace NZ_Walks.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetAllAsync()
         {
             var result = await _regionRepository.GetAllAsync();
@@ -37,6 +39,7 @@ namespace NZ_Walks.Controllers
 
         [HttpGet("{Id}")]
         [ActionName("GetByIdAsync")]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetByIdAsync(Guid Id)
         {
             var result = await _regionRepository.GetByIdAsync(Id);
@@ -50,6 +53,7 @@ namespace NZ_Walks.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> AddAsync(Models.Dto.AddRegionRequest addRegionRequest)
         {
             var result = await _regionRepository.AddAsync(_mapper.Map<Models.Domain.Region>(addRegionRequest));
@@ -58,6 +62,7 @@ namespace NZ_Walks.Controllers
         }
 
         [HttpPut("{Id}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> UpdateAsync(Guid Id, [FromBody] UpdateRegionRequest updateRegionRequest)
         {
             var region = await _regionRepository.GetByIdAsync(Id);
@@ -73,6 +78,7 @@ namespace NZ_Walks.Controllers
         }
 
         [HttpDelete("{Id}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> DeleteByIdAsync(Guid Id)
         {
             var region = await _regionRepository.GetByIdAsync(Id);

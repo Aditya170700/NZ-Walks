@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NZ_Walks.Models.Domain;
 using NZ_Walks.Models.Dto;
@@ -27,6 +29,7 @@ namespace NZ_Walks.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetAllAsync()
         {
             var result = await _walkRepository.GetAllAsync();
@@ -36,6 +39,7 @@ namespace NZ_Walks.Controllers
 
         [HttpGet("{Id}")]
         [ActionName("GetByIdAsync")]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetByIdAsync(Guid Id)
         {
             var result = await _walkRepository.GetByIdAsync(Id);
@@ -49,6 +53,7 @@ namespace NZ_Walks.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> AddAsync([FromBody]Models.Dto.Walk.AddWalkRequest addWalkRequest)
         {
             var result = await _walkRepository.AddAsync(_mapper.Map<Models.Domain.Walk>(addWalkRequest));
@@ -57,6 +62,7 @@ namespace NZ_Walks.Controllers
         }
 
         [HttpPut("{Id}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> UpdateAsync(Guid Id, [FromBody] UpdateWalkRequest updateWalkRequest)
         {
             var walk = await _walkRepository.GetByIdAsync(Id);
@@ -72,6 +78,7 @@ namespace NZ_Walks.Controllers
         }
 
         [HttpDelete("{Id}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> DeleteByIdAsync(Guid Id)
         {
             var walk = await _walkRepository.GetByIdAsync(Id);
