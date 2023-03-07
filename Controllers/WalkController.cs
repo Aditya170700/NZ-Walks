@@ -13,6 +13,7 @@ using NZ_Walks.Repositories;
 
 namespace NZ_Walks.Controllers
 {
+    [ApiController]
     [Route("api/walks")]
     public class WalkController : Controller
     {

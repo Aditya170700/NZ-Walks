@@ -11,6 +11,7 @@ using NZ_Walks.Repositories;
 
 namespace NZ_Walks.Controllers
 {
+    [ApiController]
     [Route("api/walk-difficultys")]
     public class WalkDifficultyController : Controller
     {
