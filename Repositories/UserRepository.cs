@@ -14,17 +14,12 @@ namespace NZ_Walks.Repositories
             _appDbContext = appDbContext;
         }
 
-        public async Task<User> AuthenticateAsync(string Username, string Password)
+        public async Task<User> AuthenticateAsync(string Username)
         {
             var user = await _appDbContext.Users
                 .Include(u => u.RoleUsers)
                 .ThenInclude(ru => ru.Role)
-                .FirstOrDefaultAsync(x => x.Username.ToLower() == Username.ToLower() && x.Password == Password);
-
-            if (user == null)
-            {
-                throw new Exception("Username or password is incorrect");
-            }
+                .FirstOrDefaultAsync(x => x.Username == Username);
 
             if (user.RoleUsers.Count > 0)
             {
@@ -35,7 +30,16 @@ namespace NZ_Walks.Repositories
                 });
             }
 
-            user.Password = null;
+            return user;
+        }
+
+        public async Task<User> RegisterAsync(User user)
+        {
+            user.Id = Guid.NewGuid();
+
+            _appDbContext.AddAsync(user);
+            await _appDbContext.SaveChangesAsync();
+
             return user;
         }
     }
